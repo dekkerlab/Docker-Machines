@@ -24,13 +24,8 @@ docker run --name ${MYSQL_HOST} \
            --network WP_NETWORK \
            --volume "${MYSQL_VOLUME}:/var/lib/mysql" \
            --env-file ${ENV_FILE} \
-           ${MYSQL_IMAGE} &
-
-echo ${WP_HOST}
-echo $PORT
-echo "${WORDPRESS_VOLUME}:/var/www/html/wp-content"
-echo ${ENV_FILE}
-echo $WORDPRESS_IMAGE
+           --detach \
+           ${MYSQL_IMAGE}
 
 # Wait for mysql server to accept connections
 #Better solutions exist such as listening ports in a loop
@@ -43,5 +38,6 @@ docker run --name ${WP_HOST} \
            --publish $PORT:80 \
            --volume "${WORDPRESS_VOLUME}:/var/www/html/wp-content" \
            --env-file ${ENV_FILE} \
+           --detach \
            --publish-all \
            $WORDPRESS_IMAGE
