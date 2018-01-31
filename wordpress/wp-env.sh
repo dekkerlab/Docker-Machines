@@ -1,0 +1,9 @@
+MYSQL_ROOT_PASSWORD=wordpress
+MYSQL_DATABASE=wordpress
+MYSQL_USER=wordpress
+MYSQL_PASSWORD=wordpress
+
+
+WORDPRESS_DB_PASSWORD=wordpress
+WORDPRESS_DB_USER=root
+WORDPRESS_DB_NAME=wordpress
