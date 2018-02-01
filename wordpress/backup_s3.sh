@@ -10,8 +10,8 @@
 FOLDER=`pwd`
 now_s3=`date +'%Y/%m/%d'`
 
-MYSQL_FOLDER=$FOLDER/mysql-data
-WP_FOLDER=$FOLDER/wp-content
+MYSQL_FOLDER=mysql-data
+WP_FOLDER=wp-content
 
 if [ ! -d ${WP_FOLDER} ];
 then
