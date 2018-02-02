@@ -31,7 +31,7 @@ docker run --name ${MYSQL_HOST} \
 #Better solutions exist such as listening ports in a loop
 #we can implement it in the future
 echo "Wait for MYSQL server to finish initialization"
-sleep 10
+sleep 20
 
 docker run --name ${WP_HOST} \
            --network WP_NETWORK \
