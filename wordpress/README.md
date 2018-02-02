@@ -15,6 +15,11 @@ to the scripts folder (i.e., /path/to/Docker-Machines/wordpress), and then run t
 **NOTE:**
 For backup and recovery AWS S3 must be configured in the host machine.
 
+## PORT
+The scripts `run_server.sh` and `recover_from_s3.sh` uses a variable called *PORT*. 
+The web server is going to use this port.
+For production use, set this value to 80. If you want to run it locally, you can give an avaialble port number such as 8080.
+
 ## Running For the First Time
 If you want to run it for the first time, run
 
