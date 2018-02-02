@@ -142,6 +142,8 @@ zcat ${MYSQL_BACKUP_FILE} | docker exec -i ${MYSQL_HOST}\
 ## Recover the wordpress files next
 tar -xzf ${WP_BACKUP_FILE}
 
+sudo chmod 777 ${WORDPRESS_VOLUME} -R
+
 docker run --name ${WP_HOST} \
            --network WP_NETWORK \
            --publish $PORT:80 \

@@ -20,6 +20,8 @@ for DIR in ${MYSQL_VOLUME} ${WORDPRESS_VOLUME}; do
   mkdir -p $DIR || echo "$DIR already exists"
 done
 
+sudo chmod 777 ${WORDPRESS_VOLUME} -R
+
 docker run --name ${MYSQL_HOST} \
            --network WP_NETWORK \
            --volume "${MYSQL_VOLUME}:/var/lib/mysql" \
