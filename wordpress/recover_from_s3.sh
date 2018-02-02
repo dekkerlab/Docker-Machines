@@ -108,7 +108,7 @@ docker run --name ${MYSQL_HOST} \
            ${MYSQL_IMAGE}
 
 echo "Wait for MYSQL server to finish initialization"
-sleep 10
+sleep 20
 
 ## Recover wordpress database from the sql file
 zcat ${MYSQL_BACKUP_FILE} | docker exec -i ${MYSQL_HOST}\
