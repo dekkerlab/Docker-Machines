@@ -53,7 +53,31 @@ fi
 
 #######################################
 ## Stop the containers
-bash stop_containers.sh
+WP_WORKING=`docker ps -a | grep -E " ${WP_HOST}" | wc -l`
+MYSQL_WORKING=`docker ps -a | grep -E " ${MYSQL_HOST}" | wc -l`
+
+if [ ${MYSQL_WORKING} -gt 0 ];
+then
+  echo stopping mysql container...
+  docker stop ${MYSQL_HOST}
+  docker rm ${MYSQL_HOST}
+fi
+
+if [ ${WP_WORKING} -gt 0 ];
+then
+  echo stopping wordpress container...
+  docker stop ${WP_HOST}
+  docker rm ${WP_HOST}
+fi
+
+## Arrange Network
+NETWORK_EXISTS=`docker network ls | grep "WP_NETWORK" | wc -l`
+if [ ${NETWORK_EXISTS} -eq 0 ];
+then
+  echo creating WP_NETWORK
+  docker network create --driver bridge WP_NETWORK
+fi
+
 sleep 5
 
 ##
@@ -90,6 +114,8 @@ sleep 10
 zcat ${MYSQL_BACKUP_FILE} | docker exec -i ${MYSQL_HOST}\
     /usr/bin/mysql -u root --password=wordpress wordpress
 
+
+
 ############################################
 ## Recover the wordpress files next
 tar -xzf ${WP_BACKUP_FILE}
@@ -105,6 +131,6 @@ docker run --name ${WP_HOST} \
 
 rm ${MYSQL_BACKUP_FILE} ${WP_BACKUP_FILE}
 
-docker ps -f "name=mysql" -f "name=WORDPRESS" 
+docker ps -f "name=mysql" -f "name=WORDPRESS"
 
 echo DONE!
