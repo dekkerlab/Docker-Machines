@@ -4,7 +4,7 @@ MYSQL_IMAGE="mysql:5.7"
 WORDPRESS_IMAGE="wordpress:4.9.2-php7.2-apache"
 ENV_FILE="wp-env.sh"
 
-PORT=8080
+PORT=80
 
 MYSQL_VOLUME="$PWD/mysql-data"
 WORDPRESS_VOLUME="$PWD/wp-content"
