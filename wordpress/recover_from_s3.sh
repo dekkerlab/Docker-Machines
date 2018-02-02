@@ -5,9 +5,24 @@
 ## 2) RECOVER wp-contents folder
 ##
 ## IMPORTANT
-## Usage: bash recever_s3.sh YYYY-MM-DD
+## Usage: bash recover_s3.sh YYYY-MM-DD
 ## Note that you need to specify a particular date for recovery
 ## The date is in the format YYYY-MM-DD
+##
+## NOTE:
+## The first arguments is the date: Example: 2018-02-01
+## This determines the date of the backup to recover from
+##
+## The second and third arguments are optional
+## If you are moving from one domain name to another domain
+## then you should provide
+## $2: (i.e., second argument) old domain
+## $3: (i.e., third argument) new domain
+##
+## Example Usage:
+##
+## bash recover_s3.sh 2018-02-01 localhost www.dekkerlab.org
+
 
 MYSQL_IMAGE="mysql:5.7"
 WORDPRESS_IMAGE="wordpress:4.9.2-php7.2-apache"
@@ -110,11 +125,18 @@ docker run --name ${MYSQL_HOST} \
 echo "Wait for MYSQL server to finish initialization"
 sleep 20
 
+## If you are moving backup from one domain to another domain
+## then you need to fix the links in the database
+if [ ! -z $2 ] && [ ! -z $3 ];
+then
+   echo Replacing $2 with $3 in the database
+   zcat ${MYSQL_BACKUP_FILE} | sed "s/$2/$3/g" | gzip > ${MYSQL_BACKUP_FILE}.tmp
+   mv ${MYSQL_BACKUP_FILE}.tmp ${MYSQL_BACKUP_FILE}
+fi
+
 ## Recover wordpress database from the sql file
 zcat ${MYSQL_BACKUP_FILE} | docker exec -i ${MYSQL_HOST}\
     /usr/bin/mysql -u root --password=wordpress wordpress
-
-
 
 ############################################
 ## Recover the wordpress files next
