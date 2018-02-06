@@ -6,6 +6,7 @@ The scripts automate spinning up docker machines, backup and recovery.
 There are two containers to run the wordpress server.
 
 **1. Apache & Wordpress:** Contains Apache with PHP and Wordpress
+
 **2. MySQL:** MySQL Database Server 
 
 **IMPORTANT:**
@@ -13,7 +14,7 @@ The paths in most scripts are relative. So please change your working directory
 to the scripts folder (i.e., /path/to/Docker-Machines/wordpress), and then run the scripts.
 
 **NOTE:**
-For backup and recovery AWS S3 must be configured in the host machine.
+For backup and recovery, AWS S3 must be configured in the host machine.
 
 ## PORT
 The scripts `run_server.sh` and `recover_from_s3.sh` uses a variable called *PORT*. 
@@ -37,7 +38,7 @@ While the containers are running, you can take a backup of the containers as fol
 
 `bash backup_s3.sh`
 
-Please note that AWS S3 moust be configured in the host machine for this.
+Please note that AWS S3 must be configured in the host machine for this.
 On some AWS EC2 images of the lab, this comes readily available.
 
 ## Recovering a Backup in S3
@@ -49,6 +50,20 @@ Note that that, when a backup is taken, the backup location and file names will 
 So, for example, if you want to recover a page from February 1st, 2018, you can run
 
 `bash recover_from_s3.sh 2018-02-01`
+
+## Moving Site to a New Domian
+
+If the site is to be moved to a new domain, you need to replace the links in the wordpress website. However, one needs to be careful in doing so because serialization is likely to cause problems. See, for example, 
+
+[https://neliosoftware.com/blog/wordpress-migration-problems-and-how-to-fix-them/](https://neliosoftware.com/blog/wordpress-migration-problems-and-how-to-fix-them/)
+
+So far, the [Migrate DB plugin](https://wordpress.org/plugins/wp-migrate-db/) seems to fix the serialization issue.
+
+Before migrating the site, use this plugin to replace the old domain with the new domain. Then
+
+1) Use the recovery script or steps therein to recovr the database in the new website
+2) Overwrite the existing database using the sql dump you obtaiend Migrate DB plugin
+`zcat new_dump.sql.gz | docker exec -i mysql /usr/bin/mysql -u root --password=wordpress wordpress`
 
 ## Environment Variables
 The environment variables for both docker machines are stored in the file
@@ -66,6 +81,6 @@ We use
 in our scripts so that Wordpress server waits for the docker server to initialize. Otherwise, it won't be able to make connection. A better solution could be using a script in the Wordpress server that checks MySQL server port.
 
 ## Automated Backups
-One way of doing automated backups is setting up a crontab job to run `backup_s3.sh` script periodically.
+One way of doing automated backups is setting up a cron job to run `backup_s3.sh` script periodically.
 
 
