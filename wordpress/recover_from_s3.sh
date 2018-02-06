@@ -13,6 +13,12 @@
 ## The first arguments is the date: Example: 2018-02-01
 ## This determines the date of the backup to recover from
 ##
+## IMPORTNAT: The following does not solve the serialization problem
+## So, if you are using the site to a new doamin, use Migrate DB plugin
+## You can have more detailed info in the following link:
+## https://neliosoftware.com/blog/wordpress-migration-problems-and-how-to-fix-them/
+## 
+##
 ## The second and third arguments are optional
 ## If you are moving from one domain name to another domain
 ## then you should provide
@@ -157,4 +163,6 @@ rm ${MYSQL_BACKUP_FILE} ${WP_BACKUP_FILE}
 
 docker ps -f "name=mysql" -f "name=WORDPRESS"
 
+echo Wait a little for the server to iitialize
+sleep 10
 echo DONE!
