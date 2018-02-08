@@ -71,14 +71,14 @@ wp-env.sh. This file is needed for running the docker machines and provided in t
 
 ## docker-compose.yml
 Do not use this for running containers. Currently, we keep this file for archival purposes.
-The problem with using docker-compose is that Wordpress server does not wait long enoigh for the MySQL server to initialize.
+The problem with using docker-compose is that Wordpress server does not wait long enough for the MySQL server to initialize.
 
 ## Wait for the MySQL Server to Initialize
 We use
 
 `sleep 20`
 
-in our scripts so that Wordpress server waits for the docker server to initialize. Otherwise, it won't be able to make connection. A better solution could be using a script in the Wordpress server that checks MySQL server port.
+in our scripts so that Wordpress server waits for the Wordpress server to initialize. Otherwise, it won't be able to make connection. A better solution could be using a script in the Wordpress server that checks MySQL server port.
 
 ## Automated Backups
 One way of doing automated backups is setting up a cron job to run `backup_s3.sh` script periodically.
